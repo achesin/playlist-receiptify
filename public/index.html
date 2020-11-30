@@ -37,7 +37,7 @@
 					RECEIPTIFY
 				</h2>
 				<p class='period'>
-					{{period}}
+					{{this.title}}
 				</p>
 				<p class='date'>
 					ORDER #000{{num}} FOR {{name}}
@@ -63,15 +63,15 @@
 								0{{@index}}
 							</td>
 							<td class='name'>
-								{{this.name}} -
-								{{#each this.artists}}
+								{{this.track.name}} -
+								{{#each this.track.artists}}
 									<span>
 										{{this.name}}
 									</span>
 								{{/each}}
 							</td>
 							<td class='length'>
-								{{this.duration_ms}}
+								{{this.track.duration_ms}}
 							</td>
 						</tr>
 					{{/each}}
@@ -80,7 +80,7 @@
 							ITEM COUNT:
 						</td>
 						<td class='length'>
-							10
+							{{this.tracks.length}}
 						</td>
 					</tr>
 					<tr class='total-counts-end'>
@@ -96,7 +96,7 @@
 					CARD #: **** **** **** 2020
 				</p>
 				<p class='date'>
-					AUTH CODE: 123420
+					AUTH CODE: ayy lmao
 				</p>
 				<p class='date'>
 					CARDHOLDER: {{name}}

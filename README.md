@@ -1,7 +1,7 @@
 # Receiptify
-Web application inspired by https://www.instagram.com/albumreceipts/. Generates receipts that list out a user's top tracks in the past month, 6 months, and all time.
+Web application inspired by https://www.instagram.com/albumreceipts/ and  https://receiptify.herokuapp.com/. Generates receipts that list out the songs on a playlist of the user's choosing!
 
-The application can be viewed at https://receiptify.herokuapp.com/.
+I do not take credit for this idea, I just wanted to mess around with the Spotify APIs and see what I could create!
 
 ## Running the App Locally
 

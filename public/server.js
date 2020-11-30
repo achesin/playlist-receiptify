@@ -25,35 +25,43 @@
 
 	function retrieveTracks(timeRangeSlug, domNumber, domPeriod) {
 		$.ajax({
-			url: `https://api.spotify.com/v1/me/top/tracks?limit=10&time_range=${timeRangeSlug}`,
+			url: `https://api.spotify.com/v1/playlists/0KIPWaDK3jePD5zZDuPG4G?market=US`,
 			headers: {
 				Authorization: 'Bearer ' + access_token
 			},
 			success: function (response) {
 				var data = {
-					trackList: response.items,
+					title: response.name,
+					trackList: response.tracks.items,
 					total: 0,
 					date: today.toLocaleDateString('en-US', dateOptions).toUpperCase(),
 					json: true
 				};
+				data.title = data.title.toUpperCase();
+				console.log(data.title);
+				console.log(data.trackList);
 				for (var i = 0; i < data.trackList.length; i++) {
-					data.trackList[i].name = data.trackList[i].name.toUpperCase();
-					data.total += data.trackList[i].duration_ms;
-					let minutes = Math.floor(data.trackList[i].duration_ms / 60000);
-					let seconds = ((data.trackList[i].duration_ms % 60000) / 1000).toFixed(0);
-					data.trackList[i].duration_ms = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-					for (var j = 0; j < data.trackList[i].artists.length; j++) {
-						data.trackList[i].artists[j].name = data.trackList[i].artists[j].name.trim();
-						data.trackList[i].artists[j].name = data.trackList[i].artists[j].name.toUpperCase();
-						if (j != data.trackList[i].artists.length - 1) {
-							data.trackList[i].artists[j].name = data.trackList[i].artists[j].name + ', ';
+					data.trackList[i].track.name = data.trackList[i].track.name.toUpperCase();
+					console.log(data.trackList[i].track.name);
+					data.total += data.trackList[i].track.duration_ms;
+					let minutes = Math.floor(data.trackList[i].track.duration_ms / 60000);
+					let seconds = ((data.trackList[i].track.duration_ms % 60000) / 1000).toFixed(0);
+					data.trackList[i].track.duration_ms = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+					for (var j = 0; j < data.trackList[i].track.artists.length; j++) {
+						data.trackList[i].track.artists[j].name = data.trackList[i].track.artists[j].name.trim();
+						data.trackList[i].track.artists[j].name = data.trackList[i].track.artists[j].name.toUpperCase();
+						if (j != data.trackList[i].track.artists.length - 1) {
+							data.trackList[i].track.artists[j].name = data.trackList[i].track.artists[j].name + ', ';
 						}
 					}
+					console.log(data.trackList[i].track.artists.name);
 				}
 				minutes = Math.floor(data.total / 60000);
 				seconds = ((data.total % 60000) / 1000).toFixed(0);
 				data.total = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+				console.log(data.trackList);
 				userProfilePlaceholder.innerHTML = userProfileTemplate({
+					title: data.title,
 					tracks: data.trackList,
 					total: data.total,
 					time: data.date,
@@ -82,6 +90,7 @@
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
 				// error handler here
+				console.error("Failed to access endpoint");
 			}
 		});
 	}

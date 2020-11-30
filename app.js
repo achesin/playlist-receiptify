@@ -13,8 +13,8 @@ const querystring = require('querystring');
 const cookieParser = require('cookie-parser');
 const { config } = require('./config');
 
-var client_id = config.clientID; // Your client id
-var client_secret = config.clientSecret; // Your secret
+var client_id = '9d69b27e88ac47c1992c899086ca861b'; // Your client id
+var client_secret = 'bd95f5bdf37e43b58f2d9d82ad411719'; // Your secret
 var redirect_uri = 'http://localhost:3000/callback'; // Your redirect uri
 
 /**
@@ -98,17 +98,28 @@ app.get('/callback', function (req, res) {
 					headers: { Authorization: 'Bearer ' + access_token },
 					json: true
 				};
-
 				var topOptions = {
 					url: 'https://api.spotify.com/v1/me/top/tracks',
+					headers: { Authorization: 'Bearer ' + access_token },
+					json: true
+				}
+				var playlistOptions = {
+					url: 'https://api.spotify.com/v1/playlists/0KIPWaDK3jePD5zZDuPG4G?market=US', // 'a playlist of songs i say are the best songs ever written'
 					headers: { Authorization: 'Bearer ' + access_token },
 					json: true
 				};
 
 				// use the access token to access the Spotify Web API
-				request.get(topOptions, function (error, response, body) {
-					for (let i = 0; i < body.items.length; i++) {
-						console.log(body);
+
+				// request.get(topOptions, function (error, response, body) {
+				// 	for (let i = 0; i < body.items.length; i++) {
+				// 		console.log(body);
+				// 	}
+				// });
+
+				request.get(playlistOptions, function (error, response, body) {
+					for (let i = 0; i < body.tracks.items.length; i++) {
+						console.log(body); // .tracks.items[i].track
 					}
 				});
 
