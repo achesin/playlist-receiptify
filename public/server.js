@@ -1,4 +1,4 @@
-(function () {
+var Server = function () {
 	/**
 	 * Obtains parameters from the hash of the URL
 	 * @return Object
@@ -23,9 +23,33 @@
 		return hashParams;
 	}
 
-	function retrieveTracks(timeRangeSlug, domNumber, domPeriod) {
+	function retrievePlaylists() {
 		$.ajax({
-			url: `https://api.spotify.com/v1/playlists/0KIPWaDK3jePD5zZDuPG4G?market=US`,
+			url: `https://api.spotify.com/v1/me/playlists`,
+			headers: {
+				Authorization: 'Bearer ' + access_token
+			},
+			success: function (response) {
+				var data = {
+					playlistList: response.items,
+					json: true
+				};
+				userProfilePlaceholder.innerHTML = userProfileTemplate({
+					playlists: data.playlistList,
+				});
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				// error handler here
+				console.error("Failed to access playlist endpoint");
+			}
+		});
+	}
+
+	function retrieveTracks(timeRangeSlug, domNumber) {
+		$.ajax({
+			url: `https://api.spotify.com/v1/playlists/6mB0KUI2hdFGdSqWvklpQr?market=US`,
+			// 6mB0KUI2hdFGdSqWvklpQr 'best of 2020'
+			// 0KIPWaDK3jePD5zZDuPG4G 'a playlist of songs i say are the best songs ever written'
 			headers: {
 				Authorization: 'Bearer ' + access_token
 			},
@@ -38,8 +62,6 @@
 					json: true
 				};
 				data.title = data.title.toUpperCase();
-				console.log(data.title);
-				console.log(data.trackList);
 				for (var i = 0; i < data.trackList.length; i++) {
 					data.trackList[i].track.name = data.trackList[i].track.name.toUpperCase();
 					console.log(data.trackList[i].track.name);
@@ -54,12 +76,10 @@
 							data.trackList[i].track.artists[j].name = data.trackList[i].track.artists[j].name + ', ';
 						}
 					}
-					console.log(data.trackList[i].track.artists.name);
 				}
 				minutes = Math.floor(data.total / 60000);
 				seconds = ((data.total % 60000) / 1000).toFixed(0);
 				data.total = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-				console.log(data.trackList);
 				userProfilePlaceholder.innerHTML = userProfileTemplate({
 					title: data.title,
 					tracks: data.trackList,
@@ -67,7 +87,6 @@
 					time: data.date,
 					num: domNumber,
 					name: displayName,
-					period: domPeriod
 				});
 
 				document.getElementById('download').addEventListener('click', function () {
@@ -123,8 +142,8 @@
 			$('#loggedin').hide();
 		}
 
-		document.getElementById('short_term').addEventListener('click', retrieveTracks('short_term', 1, 'LAST MONTH'), false);
-		document.getElementById('medium_term').addEventListener('click', retrieveTracks('medium_term', 2, 'LAST 6 MONTHS'), false);
-		document.getElementById('long_term').addEventListener('click', retrieveTracks('long_term', 3, 'ALL TIME'), false);
+		document.getElementById('long_term').addEventListener('click', retrievePlaylists(), false);
+		// document.getElementsById('submit').addEventListener('click', retrieveTracks("as", 1), false);
+		// document.getElementById('long_term').addEventListener('click', retrieveTracks("as", 1), false);
 	}
-})();
+}();

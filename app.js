@@ -45,7 +45,7 @@ app.get('/login', function (req, res) {
 	res.cookie(stateKey, state);
 
 	// your application requests authorization
-	var scope = 'user-read-private user-read-email user-top-read';
+	var scope = 'user-read-private user-read-email user-top-read playlist-read-private';
 	res.redirect(
 		'https://accounts.spotify.com/authorize?' +
 			querystring.stringify({
@@ -103,7 +103,12 @@ app.get('/callback', function (req, res) {
 					headers: { Authorization: 'Bearer ' + access_token },
 					json: true
 				}
-				var playlistOptions = {
+				var allPlaylistOptions = {
+					url: 'https://api.spotify.com/v1/me/playlists',
+					headers: { Authorization: 'Bearer ' + access_token },
+					json: true
+				}
+				var singlePlaylistOptions = {
 					url: 'https://api.spotify.com/v1/playlists/0KIPWaDK3jePD5zZDuPG4G?market=US', // 'a playlist of songs i say are the best songs ever written'
 					headers: { Authorization: 'Bearer ' + access_token },
 					json: true
@@ -117,9 +122,15 @@ app.get('/callback', function (req, res) {
 				// 	}
 				// });
 
-				request.get(playlistOptions, function (error, response, body) {
-					for (let i = 0; i < body.tracks.items.length; i++) {
-						console.log(body); // .tracks.items[i].track
+				// request.get(singlePlaylistOptions, function (error, response, body) {
+				// 	for (let i = 0; i < body.tracks.items.length; i++) {
+				// 		console.log(body); // .tracks.items[i].track
+				// 	}
+				// });
+
+				request.get(allPlaylistOptions, function (error, response, body) {
+					for (let i = 0; i < body.items.length; i++) {
+						console.log(body.items[i].name);
 					}
 				});
 

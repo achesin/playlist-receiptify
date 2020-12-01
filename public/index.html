@@ -11,21 +11,32 @@
 		<div class="container">
 			<div id="login">
 				<h1>Receiptify</h1>
-				<h2>Spotify Top Track Generator</h2>
+				<h2>Spotify Playlist Receipt Generator</h2>
 				<a href="/login" class="login-btn">Log in with Spotify</a>
 				<p class="info">
 					This website was inspired by the Instagram account <a href="https://www.instagram.com/albumreceipts/">@albumreceipts</a>!</p>
 				</p>
 				<p class="info">
-					Made by <a href="https://michellexliu.github.io/">Michelle Liu</a>.</p>
+					Original by <a href="https://michellexliu.github.io/">Michelle Liu</a>, modified by Amanda Chesin.</p>
 				</p>
 			</div>
 			<div id="loggedin">
 				<h1>Receiptify</h1>
-				<h2>Spotify Top Track Generator</h2>
+				<h2>Spotify Playlist Receipt Generator</h2>
+				<script id="user-profile-template" type="text/x-handlebars-template">
+					<form>
+						<label for="cars">Choose a playlist:</label>
+						<select name="cars" id="cars">
+						  {{#each playlists}}
+						  <option value="volvo">{{this.name}}</option>
+						  {{/each}}
+						</select>
+						<br><br>
+						<input type="submit" value="Submit" onclick="myFunction()">
+				 	 </form>
+				  </script>
+				
 				<div id="options">
-					<button class="btn" id="short_term">Last Month</button>
-					<button class="btn" id="medium_term">Last 6 Months</button>
 					<button class="btn" id="long_term">All Time</button>
 				</div>
 				<div id="receipt"></div>
@@ -118,6 +129,7 @@
 		<script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 		<script src="dom-to-image.min.js"></script>
 		<script src="FileSaver.min.js"></script>
-		<script src="server.js"></script>
+		<script src="server.js">
+		</script>
 	</body>
 </html>
