@@ -66,7 +66,6 @@ var Server = function () {
 				Authorization: 'Bearer ' + access_token
 			},
 			success: function (response) {
-				console.log(response);
 				var itemNumber = 1;
 				var data = {
 					title: response.name,
