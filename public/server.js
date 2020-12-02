@@ -165,6 +165,7 @@ var Server = function () {
 					displayName = response.display_name.toUpperCase();
 					$('#login').hide();
 					$('#loggedin').show();
+					retrievePlaylists();
 				}
 			});
 		} else {
@@ -173,7 +174,6 @@ var Server = function () {
 			$('#loggedin').hide();
 		}
 
-		document.getElementById('loggedin').addEventListener('load', retrievePlaylists(), false);
-		document.getElementById("long_term").addEventListener("click", function(){ retrievePlaylistId(document.getElementById("selection").elements[0].value); })
+		document.getElementById("long_term").addEventListener("click", function(){ retrievePlaylistId(document.getElementById("selection").elements[0].value); });
 	}
 }();
