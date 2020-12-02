@@ -66,15 +66,18 @@ var Server = function () {
 				Authorization: 'Bearer ' + access_token
 			},
 			success: function (response) {
+				console.log(response);
 				var itemNumber = 1;
 				var data = {
 					title: response.name,
 					trackList: response.tracks.items,
 					total: 0,
 					date: today.toLocaleDateString('en-US', dateOptions).toUpperCase(),
+					owner: response.owner.display_name,
 					json: true
 				};
 				data.title = data.title.toUpperCase();
+				data.owner = data.owner.toUpperCase();
 				for (var i = 0; i < data.trackList.length; i++) {
 					data.trackList[i].track.name = data.trackList[i].track.name.toUpperCase();
 					data.trackList[i].itemNum = itemNumber;
@@ -102,6 +105,7 @@ var Server = function () {
 					time: data.date,
 					num: receiptNum,
 					name: displayName,
+					owner: data.owner,
 				});
 
 				document.getElementById('download').addEventListener('click', function () {
