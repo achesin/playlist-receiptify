@@ -14,7 +14,7 @@ var Server = function () {
 
 	var userPlaylistSource = document.getElementById('user-playlists-template').innerHTML,
 		userPlaylistTemplate = Handlebars.compile(userPlaylistSource),
-		userPlaylistPlaceholder = document.getElementById('playlists');
+		userPlaylistPlaceholder = document.getElementById('dropdown');
 
 	function getHashParams() {
 		var hashParams = {};
@@ -34,6 +34,7 @@ var Server = function () {
 				Authorization: 'Bearer ' + access_token
 			},
 			success: function (response) {
+				console.log(response);
 				var data = {
 					playlistList: response.items,
 					json: true
@@ -49,16 +50,17 @@ var Server = function () {
 		});
 	}
 
-	function retrieveTracks() {
+	function retrieveTracks(playlistId) {
 		$.ajax({
-			url: `https://api.spotify.com/v1/playlists/6mB0KUI2hdFGdSqWvklpQr?market=US`,
+			url: `https://api.spotify.com/v1/playlists/${playlistId}?market=US`,
 			// 6mB0KUI2hdFGdSqWvklpQr 'best of 2020'
 			// 0KIPWaDK3jePD5zZDuPG4G 'a playlist of songs i say are the best songs ever written'
 			headers: {
 				Authorization: 'Bearer ' + access_token
 			},
 			success: function (response) {
-				console.log("in retrieve tracks");
+				// console.log(response);
+				console.log(playlistId);
 				var data = {
 					title: response.name,
 					trackList: response.tracks.items,
@@ -69,7 +71,6 @@ var Server = function () {
 				data.title = data.title.toUpperCase();
 				for (var i = 0; i < data.trackList.length; i++) {
 					data.trackList[i].track.name = data.trackList[i].track.name.toUpperCase();
-					console.log(data.trackList[i].track.name);
 					data.total += data.trackList[i].track.duration_ms;
 					let minutes = Math.floor(data.trackList[i].track.duration_ms / 60000);
 					let seconds = ((data.trackList[i].track.duration_ms % 60000) / 1000).toFixed(0);
@@ -90,7 +91,6 @@ var Server = function () {
 					tracks: data.trackList,
 					total: data.total,
 					time: data.date,
-					num: domNumber,
 					name: displayName,
 				});
 
@@ -115,6 +115,34 @@ var Server = function () {
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
 				// error handler here
 				console.error("Failed to access endpoint");
+			}
+		});
+	}
+
+	function retrievePlaylistId(playlistName) {
+		$.ajax({
+			url: `https://api.spotify.com/v1/me/playlists`,
+			headers: {
+				Authorization: 'Bearer ' + access_token
+			},
+			success: function (response) {
+				console.log(playlistName);
+				var playlistId = "";
+				var data = {
+					playlistList: response.items,
+					json: true
+				};
+				for(var i = 0; i < data.playlistList.length; i++) {
+					if(data.playlistList[i].name == playlistName) {
+						playlistId = data.playlistList[i].id;
+					}
+				}
+				console.log(playlistId);
+				retrieveTracks(playlistId);
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				// error handler here
+				console.error("Failed to access playlist endpoint");
 			}
 		});
 	}
@@ -147,7 +175,9 @@ var Server = function () {
 			$('#loggedin').hide();
 		}
 
-		document.getElementById('long_term').addEventListener('click', retrievePlaylists(), false);
+		document.getElementById('loggedin').addEventListener('load', retrievePlaylists(), false);
+		// document.getElementById('demo').addEventListener('change', retrieveTracks("hi"), true);
+		document.getElementById("long_term").addEventListener("click", function(){ retrievePlaylistId(document.getElementById("selection").elements[0].value); })
 		// document.getElementById('pleasework').addEventListener('click', retrieveTracks("as", 1), false);
 		// document.getElementById('long_term').addEventListener('click', retrieveTracks("as", 1), false);
 	}
