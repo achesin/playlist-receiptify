@@ -7,6 +7,7 @@ var Server = function () {
 	var displayName = 'RECEIPTIFY';
 	var dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	var today = new Date();
+	var receiptNum = 0;
 
 	var userProfileSource = document.getElementById('user-profile-template').innerHTML,
 		userProfileTemplate = Handlebars.compile(userProfileSource),
@@ -29,12 +30,11 @@ var Server = function () {
 
 	function retrievePlaylists() {
 		$.ajax({
-			url: `https://api.spotify.com/v1/me/playlists`,
+			url: `https://api.spotify.com/v1/me/playlists?limit=50`,
 			headers: {
 				Authorization: 'Bearer ' + access_token
 			},
 			success: function (response) {
-				console.log(response);
 				var data = {
 					playlistList: response.items,
 					json: true
@@ -59,8 +59,6 @@ var Server = function () {
 				Authorization: 'Bearer ' + access_token
 			},
 			success: function (response) {
-				// console.log(response);
-				console.log(playlistId);
 				var data = {
 					title: response.name,
 					trackList: response.tracks.items,
@@ -85,12 +83,14 @@ var Server = function () {
 				}
 				minutes = Math.floor(data.total / 60000);
 				seconds = ((data.total % 60000) / 1000).toFixed(0);
+				receiptNum++;
 				data.total = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
 				userProfilePlaceholder.innerHTML = userProfileTemplate({
 					title: data.title,
 					tracks: data.trackList,
 					total: data.total,
 					time: data.date,
+					num: receiptNum,
 					name: displayName,
 				});
 
@@ -121,12 +121,11 @@ var Server = function () {
 
 	function retrievePlaylistId(playlistName) {
 		$.ajax({
-			url: `https://api.spotify.com/v1/me/playlists`,
+			url: `https://api.spotify.com/v1/me/playlists?limit=50`,
 			headers: {
 				Authorization: 'Bearer ' + access_token
 			},
 			success: function (response) {
-				console.log(playlistName);
 				var playlistId = "";
 				var data = {
 					playlistList: response.items,
@@ -137,7 +136,6 @@ var Server = function () {
 						playlistId = data.playlistList[i].id;
 					}
 				}
-				console.log(playlistId);
 				retrieveTracks(playlistId);
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -176,9 +174,6 @@ var Server = function () {
 		}
 
 		document.getElementById('loggedin').addEventListener('load', retrievePlaylists(), false);
-		// document.getElementById('demo').addEventListener('change', retrieveTracks("hi"), true);
 		document.getElementById("long_term").addEventListener("click", function(){ retrievePlaylistId(document.getElementById("selection").elements[0].value); })
-		// document.getElementById('pleasework').addEventListener('click', retrieveTracks("as", 1), false);
-		// document.getElementById('long_term').addEventListener('click', retrieveTracks("as", 1), false);
 	}
 }();

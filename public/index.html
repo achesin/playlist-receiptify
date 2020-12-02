@@ -25,9 +25,8 @@
 				<h1>Receiptify</h1>
 				<h2>Spotify Playlist Receipt Generator</h2>
 				<div id="dropdown"></div>
-				<p id="demo"></p>
 				<div id="options">
-					<button class="btn" id="long_term">All Time</button>
+					<button class="btn" id="long_term">Submit</button>
 				</div>
 				<div id="receipt"></div>
 			</div>
@@ -43,15 +42,7 @@
 				</select>
 				<br><br>
 			  </form>
-			  <button class="btn" onclick="myFunction()" id="submit">Submit</button>
 		  </script>
-
-		  <script>
-			function myFunction() {
-			  var x = document.getElementById("selection").elements[0].value;
-			  document.getElementById("demo").innerHTML = x;
-			}
-			</script>
 
 		<script id="user-profile-template" type="text/x-handlebars-template">
 			<div class='receiptContainer'>
@@ -128,9 +119,6 @@
 						THANK YOU FOR VISITING!
 					</p>
 					<img src='barcode.png' />
-					<p class="website">
-						receiptify.herokuapp.com
-					</p>
 				</div>
 			</div>
 			<button class="btn" id="download">Download Image</button>

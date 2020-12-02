@@ -14,16 +14,14 @@ Once installed, clone the repository and install its dependencies running:
 ### Using your own credentials
 You will need to register your app and get your own credentials from the Spotify for Developers Dashboard.
 
-To do so, go to [your Spotify for Developers Dashboard](https://beta.developer.spotify.com/dashboard) and create your application. In my own development process, I registered these Redirect URIs:
+To do so, go to [your Spotify for Developers Dashboard](https://beta.developer.spotify.com/dashboard) and create your application. In my own development process, I registered this Redirect URI:
 
-* http://localhost:3000 (needed for the implicit grant flow)
 * http://localhost:3000/callback
 
 Once you have created your app, load the `client_id`, `redirect_uri` and `client_secret` into a `config.js` file.
 
 In order to run the app, open the folder, and run its `app.js` file:
 
-    $ cd authorization_code
     $ node app.js
 
 Then, open `http://localhost:3000` in a browser.
