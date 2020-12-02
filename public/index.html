@@ -6,6 +6,7 @@
 		<title>Receiptify</title>
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="styles.css" />
+		<!-- <script type="text/javascript" src="server.js"></script> -->
 	</head>
 	<body>
 		<div class="container">
@@ -23,25 +24,33 @@
 			<div id="loggedin">
 				<h1>Receiptify</h1>
 				<h2>Spotify Playlist Receipt Generator</h2>
-				<script id="user-profile-template" type="text/x-handlebars-template">
-					<form>
-						<label for="cars">Choose a playlist:</label>
-						<select name="cars" id="cars">
-						  {{#each playlists}}
-						  <option value="volvo">{{this.name}}</option>
-						  {{/each}}
-						</select>
-						<br><br>
-						<input type="submit" value="Submit" onclick="myFunction()">
-				 	 </form>
-				  </script>
-				
+				<div id="playlists"></div>
+		
+				  <!-- <script>
+					function myFunction() {
+					  alert("The form was submitted");
+					}
+					</script> -->
 				<div id="options">
 					<button class="btn" id="long_term">All Time</button>
 				</div>
 				<div id="receipt"></div>
 			</div>
 		</div>
+
+		<script id="user-playlists-template" type="text/x-handlebars-template">
+			<form>
+				<label for="cars">Choose a playlist:</label>
+				<select name="cars" id="cars">
+				  {{#each playlists}}
+				  <option id="volvo">{{this.name}}</option>
+				  {{/each}}
+				</select>
+				<br><br>
+				<input type="submit" id="pleasework" value="Submit">
+			  </form>
+		  </script>
+
 		<script id="user-profile-template" type="text/x-handlebars-template">
 			<div class='receiptContainer'>
 				<h2 class='logo'>
@@ -107,7 +116,7 @@
 					CARD #: **** **** **** 2020
 				</p>
 				<p class='date'>
-					AUTH CODE: ayy lmao
+					AUTH CODE: 053183
 				</p>
 				<p class='date'>
 					CARDHOLDER: {{name}}
@@ -129,7 +138,6 @@
 		<script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 		<script src="dom-to-image.min.js"></script>
 		<script src="FileSaver.min.js"></script>
-		<script src="server.js">
-		</script>
+		<script src="server.js"></script>
 	</body>
 </html>

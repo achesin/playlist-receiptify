@@ -12,6 +12,10 @@ var Server = function () {
 		userProfileTemplate = Handlebars.compile(userProfileSource),
 		userProfilePlaceholder = document.getElementById('receipt');
 
+	var userPlaylistSource = document.getElementById('user-playlists-template').innerHTML,
+		userPlaylistTemplate = Handlebars.compile(userPlaylistSource),
+		userPlaylistPlaceholder = document.getElementById('playlists');
+
 	function getHashParams() {
 		var hashParams = {};
 		var e,
@@ -34,7 +38,7 @@ var Server = function () {
 					playlistList: response.items,
 					json: true
 				};
-				userProfilePlaceholder.innerHTML = userProfileTemplate({
+				userPlaylistPlaceholder.innerHTML = userPlaylistTemplate({
 					playlists: data.playlistList,
 				});
 			},
@@ -45,7 +49,7 @@ var Server = function () {
 		});
 	}
 
-	function retrieveTracks(timeRangeSlug, domNumber) {
+	function retrieveTracks() {
 		$.ajax({
 			url: `https://api.spotify.com/v1/playlists/6mB0KUI2hdFGdSqWvklpQr?market=US`,
 			// 6mB0KUI2hdFGdSqWvklpQr 'best of 2020'
@@ -54,6 +58,7 @@ var Server = function () {
 				Authorization: 'Bearer ' + access_token
 			},
 			success: function (response) {
+				console.log("in retrieve tracks");
 				var data = {
 					title: response.name,
 					trackList: response.tracks.items,
@@ -143,7 +148,7 @@ var Server = function () {
 		}
 
 		document.getElementById('long_term').addEventListener('click', retrievePlaylists(), false);
-		// document.getElementsById('submit').addEventListener('click', retrieveTracks("as", 1), false);
+		// document.getElementById('pleasework').addEventListener('click', retrieveTracks("as", 1), false);
 		// document.getElementById('long_term').addEventListener('click', retrieveTracks("as", 1), false);
 	}
 }();
