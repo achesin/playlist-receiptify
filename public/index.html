@@ -26,7 +26,7 @@
 				<h2>Spotify Playlist Receipt Generator</h2>
 				<div id="dropdown"></div>
 				<div id="options">
-					<button class="btn" id="long_term">Submit</button>
+					<button class="btn" id="submit">Submit</button>
 				</div>
 				<div id="receipt"></div>
 			</div>
@@ -73,7 +73,11 @@
 					{{#each tracks}}
 						<tr>
 							<td class='begin'>
-								0{{@index}}
+								{{#ifCond this.itemNum}}
+									0{{this.itemNum}}
+								{{else}}
+									{{this.itemNum}}
+								{{/ifCond}}
 							</td>
 							<td class='name'>
 								{{this.track.name}} -

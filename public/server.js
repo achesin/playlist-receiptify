@@ -17,6 +17,13 @@ var Server = function () {
 		userPlaylistTemplate = Handlebars.compile(userPlaylistSource),
 		userPlaylistPlaceholder = document.getElementById('dropdown');
 
+	Handlebars.registerHelper('ifCond', function(value, options) {
+		if(value < 10) {
+			return options.fn(this);
+		}
+		return options.inverse(this);
+	});
+
 	function getHashParams() {
 		var hashParams = {};
 		var e,
@@ -59,6 +66,7 @@ var Server = function () {
 				Authorization: 'Bearer ' + access_token
 			},
 			success: function (response) {
+				var itemNumber = 1;
 				var data = {
 					title: response.name,
 					trackList: response.tracks.items,
@@ -69,6 +77,7 @@ var Server = function () {
 				data.title = data.title.toUpperCase();
 				for (var i = 0; i < data.trackList.length; i++) {
 					data.trackList[i].track.name = data.trackList[i].track.name.toUpperCase();
+					data.trackList[i].itemNum = itemNumber;
 					data.total += data.trackList[i].track.duration_ms;
 					let minutes = Math.floor(data.trackList[i].track.duration_ms / 60000);
 					let seconds = ((data.trackList[i].track.duration_ms % 60000) / 1000).toFixed(0);
@@ -80,6 +89,7 @@ var Server = function () {
 							data.trackList[i].track.artists[j].name = data.trackList[i].track.artists[j].name + ', ';
 						}
 					}
+					itemNumber++;
 				}
 				minutes = Math.floor(data.total / 60000);
 				seconds = ((data.total % 60000) / 1000).toFixed(0);
@@ -101,9 +111,8 @@ var Server = function () {
 					// Use clone with htm2canvas and delete clone
 					html2canvas(offScreen).then((canvas) => {
 						var dataURL = canvas.toDataURL();
-						console.log(dataURL);
 						var link = document.createElement('a');
-						link.download = `${timeRangeSlug}_receiptify.png`;
+						link.download = `${data.title}_receiptify.png`;
 						link.href = dataURL;
 						document.body.appendChild(link);
 						link.click();
@@ -164,8 +173,8 @@ var Server = function () {
 				success: function (response) {
 					displayName = response.display_name.toUpperCase();
 					$('#login').hide();
-					$('#loggedin').show();
 					retrievePlaylists();
+					$('#loggedin').show();
 				}
 			});
 		} else {
@@ -174,6 +183,6 @@ var Server = function () {
 			$('#loggedin').hide();
 		}
 
-		document.getElementById("long_term").addEventListener("click", function(){ retrievePlaylistId(document.getElementById("selection").elements[0].value); });
+		document.getElementById("submit").addEventListener("click", function(){ retrievePlaylistId(document.getElementById("selection").elements[0].value); });
 	}
 }();
