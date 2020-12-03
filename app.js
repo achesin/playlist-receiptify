@@ -11,11 +11,12 @@ const request = require('request'); // "Request" library
 const cors = require('cors');
 const querystring = require('querystring');
 const cookieParser = require('cookie-parser');
-const config = require('./config');
 
-var client_id = '9d69b27e88ac47c1992c899086ca861b'; // Your client id
-var client_secret = 'bd95f5bdf37e43b58f2d9d82ad411719'; // Your secret
-var redirect_uri = 'http://localhost:3000/callback'; // Your redirect uri
+require('dotenv').config()
+
+var client_id = process.env.CLIENT_ID; // Your client id
+var client_secret = process.env.CLIENT_SECRET; // Your secret
+var redirect_uri = process.env.REDIRECT_URI; // Your redirect uri
 
 /**
  * Generates a random string containing numbers and letters
