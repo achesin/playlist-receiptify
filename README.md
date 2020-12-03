@@ -21,7 +21,7 @@ To do so, go to [your Spotify for Developers Dashboard](https://beta.developer.s
 
 * http://localhost:3000/callback
 
-Once you have created your app, load the `client_id`, `redirect_uri` and `client_secret` into a `config.js` file.
+Once you have created your app, load the `client_id`, `redirect_uri` and `client_secret` into a `.env` file. You can see an example under `env.dist`
 
 In order to run the app, open the folder, and run its `app.js` file:
 
